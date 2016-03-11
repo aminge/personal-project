@@ -1,0 +1,42 @@
+/*div, nav {*/
+    /*border: 1px solid black;*/
+/*}*/
+
+input[type=text] {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 20px auto;
+    padding: 0;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+}
+
+li {
+    display: inline-block;
+    padding: 14px;
+    background-color: whitesmoke;
+    border: 1px solid black;
+}
+
+li a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    /*background-color: #ddd;*/
+    /*margin-top: 6em;*/
+}
+
+#form-container {
+    margin: 0 auto;
+    float: none;
+}

@@ -1,0 +1,19 @@
+<h1>Goals Go Here</h1>
+
+<table class="u-full-width">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Deadline</th>
+            <th>Hours per Week</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="goal in goals">
+            <td>{{goal.name}}</td>
+            <td>{{goal.deadline}}</td>
+            <td>0</td>
+            <!--There will eventually be code here to calculate the number of hours per week for that goal-->
+        </tr>
+    </tbody>
+</table>
