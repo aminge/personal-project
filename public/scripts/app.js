@@ -15,6 +15,10 @@ myApp.config(['$routeProvider', function($routeProvider) {
             templateUrl: '/views/templates/tasks.html',
             controller: 'TasksController'
         })
+        .when('/completeGoals', {
+            templateUrl: '/views/templates/completeGoals.html',
+            controller: 'CompleteGoalsController'
+        })
         .otherwise({
             redirectTo: 'goals'
         });
