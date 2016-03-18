@@ -3,11 +3,9 @@ myApp.factory('DataFactory', ['$http', function($http) {
     // PRIVATE
 
     var goals = undefined;
-
     var completeGoals = undefined;
-
+    var goalToEdit = undefined;
     var goalForTasks = undefined;
-
     var tasks = undefined;
 
     var privateSubmitGoal = function(goal) {
@@ -30,11 +28,23 @@ myApp.factory('DataFactory', ['$http', function($http) {
         var promise = $http.get('/data').then(function(response) {
             goals = response.data;
 
-            // adding a Boolean value called 'selected' to each goal. Default is false
-            goals.forEach(function(goal, index, goals) {
-                goal.selected = false;
-            });
+            // get all of the tasks, so that we can calculate the hours per week for all of the goals
+            $http.get('/data/alltasks/').then(function(response) {
+                tasks = response.data;
+                console.log('Here are ALL THE TASKS: ', tasks);
+            }).then(function() {
+                // adding a Boolean value called 'selected' to each goal. Default is false
+                goals.forEach(function(goal, index, goals) {
+                    goal.selected = false;
+                    goal.hoursPerWeek = 0;
 
+                    tasks.forEach(function(task, index, tasks) {
+                        if (task.goal_id == goal.id) {
+                            goal.hoursPerWeek += parseFloat(hourDifference(task.start_time, task.end_time));
+                        }
+                    });
+                });
+            });
             console.log('the current goals are: ', goals);
         });
         return promise;
@@ -76,8 +86,26 @@ myApp.factory('DataFactory', ['$http', function($http) {
         return promise;
     };
 
+    var privateSetGoalToEdit = function(goal) {
+        goalToEdit = goal;
+        goalToEdit.deadline = new Date(goal.deadline);
+    };
+
+    var privateUpdateGoal = function(goal) {
+        $http.put('/data/edit/', goal);
+    };
+
     var privateSetGoalForTasks = function(goal) {
         goalForTasks = goal;
+    };
+
+    var hourDifference = function(time1, time2) {
+        var hourDiff = parseFloat(time2.slice(0, 2)) - parseFloat(time1.slice(0, 2));
+        var minDiff = parseFloat(time2.slice(3, 5)) - parseFloat(time1.slice(3, 5));
+        var diff = hourDiff + (minDiff / 60);
+
+        // note: toFixed returns a string
+        return diff.toFixed(1);
     };
 
     // PUBLIC
@@ -111,6 +139,15 @@ myApp.factory('DataFactory', ['$http', function($http) {
         factoryCompleteGoal: function(goal) {
             return privateCompleteGoal(goal);
         },
+        factorySetGoalToEdit: function(goal) {
+            return privateSetGoalToEdit(goal);
+        },
+        factoryGetGoalToEdit: function() {
+            return goalToEdit;
+        },
+        factoryUpdateGoal: function(goal) {
+            return privateUpdateGoal(goal);
+        },
         factorySetGoalForTasks: function(goal) {
             return privateSetGoalForTasks(goal);
         },
@@ -121,6 +158,5 @@ myApp.factory('DataFactory', ['$http', function($http) {
             return tasks;
         }
     };
-
     return publicAPI;
 }]);

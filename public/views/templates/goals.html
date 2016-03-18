@@ -10,18 +10,19 @@
     </thead>
     <tbody ng-repeat="goal in goals">
 
-        <tr ng-click="selectThisGoal(goal.id)">
+        <tr ng-click="selectThisGoal(goal)">
             <td>{{goal.name}}</td>
             <td>{{goal.deadline | date : 'longDate'}}</td>
-            <td>0</td>
+            <td>{{goal.hoursPerWeek}}</td>
             <!--There will eventually be code here to calculate the number of hours per week for that goal-->
         </tr>
         <tr ng-show="goal.selected">
-            <td colspan="3"><p>{{goal.description}}</p></td>
+            <td colspan="3"><p><b>Description:</b></p><p>{{goal.description}}</p></td>
         </tr>
         <tr ng-show="goal.selected">
             <td><button ng-click="completeGoal(goal)"> Complete</button></td>
-            <td><button ng-click="setGoalForTasks(goal)"><a href="#tasks">Edit & View Tasks</a></button></td>
+            <td><button ng-click="setGoalToEdit(goal)"><a href="#editGoal">Edit</a></button></td>
+            <td><button ng-click="setGoalForTasks(goal)"><a href="#tasks">View Tasks</a></button></td>
             <td><button ng-click="deleteGoal(goal)">Delete</button></td>
         </tr>
     </tbody>

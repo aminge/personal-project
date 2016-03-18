@@ -19,7 +19,15 @@ myApp.config(['$routeProvider', function($routeProvider) {
             templateUrl: '/views/templates/completeGoals.html',
             controller: 'CompleteGoalsController'
         })
+        .when('/editGoal', {
+            templateUrl: '/views/templates/editGoal.html',
+            controller: 'EditGoalController'
+        })
+        .when('/signIn', {
+            templateUrl: '/views/templates/signIn.html',
+            controller: 'SignInController'
+        })
         .otherwise({
-            redirectTo: 'goals'
+            redirectTo: 'signIn'
         });
 }]);

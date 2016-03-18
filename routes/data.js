@@ -100,6 +100,26 @@ router.get('/tasks/:id', function(req, res) {
     });
 });
 
+router.get('/alltasks', function(req, res) {
+
+    var results = [];
+
+    pg.connect(connectionString, function(err, client, done) {
+        var query = client.query('SELECT * FROM tasks');
+
+        query.on('row', function(row) {
+            results.push(row);
+        });
+        query.on('end', function() {
+            done();
+            return res.json(results);
+        });
+        if(err) {
+            console.log(err);
+        }
+    });
+});
+
 router.delete('/:id', function(req, res) {
     var goalID = req.params.id;
 
@@ -125,6 +145,22 @@ router.put('/complete/:id', function(req, res) {
         client.query('UPDATE goals SET complete = true, complete_date = NOW() WHERE id = $1',
         [goalID],
         function (err, result) {
+            done();
+            if(err) {
+                console.log("Error deleting data: ", err);
+                res.send(false);
+            } else {
+                res.send(true);
+            }
+        });
+    });
+});
+
+router.put('/edit', function(req, res) {
+    pg.connect(connectionString, function(err, client, done) {
+        client.query('UPDATE goals SET name = $1, deadline = $2, description = $3 WHERE id = $4',
+        [req.body.name, req.body.deadline, req.body.description, req.body.id],
+        function(err, result) {
             done();
             if(err) {
                 console.log("Error deleting data: ", err);

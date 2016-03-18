@@ -2,9 +2,9 @@
     /*border: 1px solid black;*/
 /*}*/
 
-/*input[type=text] {*/
-    /*width: 100%;*/
-/*}*/
+input[type=text] {
+    width: 70%;
+}
 
 textarea {
     width: 100%;

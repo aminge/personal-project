@@ -8,12 +8,12 @@
         </tr>
     </thead>
     <tbody ng-repeat="goal in completeGoals">
-        <tr ng-click="selectThisGoal(goal.id)">
+        <tr ng-click="selectThisGoal(goal)">
             <td>{{goal.name}}</td>
             <td>{{goal.complete_date | date : 'longDate'}}</td>
         </tr>
         <tr ng-show="goal.selected">
-            <td colspan="2"><p>{{goal.description}}</p></td>
+            <td colspan="2"><p><b>Description:</b></p><p><p>{{goal.description}}</p></td>
         </tr>
     </tbody>
 </table>
