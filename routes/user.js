@@ -1,5 +1,5 @@
 var passport = require('passport');
-var connectionString = require('connect');
+var connectionString = require('./connect');
 var pg = require('pg');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var configAuth = require('../config/auth');
@@ -168,11 +168,11 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-router.get('/auth/google/callback',
-    passport.authenticate('google', {
-        successRedirect : '/home',
-        failureRedirect : '/'
-    })
-);
+//router.get('/auth/google/callback',
+//    passport.authenticate('google', {
+//        successRedirect : '/home',
+//        failureRedirect : '/'
+//    })
+//);
 
 module.exports = passport;

@@ -23,11 +23,11 @@ myApp.config(['$routeProvider', function($routeProvider) {
             templateUrl: '/views/templates/editGoal.html',
             controller: 'EditGoalController'
         })
-        .when('/signIn', {
-            templateUrl: '/views/templates/signIn.html',
-            controller: 'SignInController'
-        })
+        //.when('/signIn', {
+        //    templateUrl: '/views/templates/signIn.html',
+        //    controller: 'SignInController'
+        //})
         .otherwise({
-            redirectTo: 'signIn'
+            redirectTo: 'goals'
         });
 }]);

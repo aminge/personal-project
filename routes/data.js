@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 var connectionString = require('./connect');
+var passport = require('passport');
 
 router.post('/goal', function(req, res) {
 
@@ -170,6 +171,52 @@ router.put('/edit', function(req, res) {
             }
         });
     });
+});
+
+router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email', 'https://www.googleapis.com/auth/calendar'] }));
+
+//function isLoggedIn(req, res, next) {
+//    // console.log('auth.js: ', req.isAuthenticated());
+//    if (req.isAuthenticated() && req.user.token !== undefined)
+//        return next();
+//    // console.log('user logged in::', req.user);
+//    res.redirect('/');
+//}
+
+// the callback after google has authenticated the user
+router.get('/auth/google/callback',
+    passport.authenticate('google', {
+        successRedirect : '/home',
+        failureRedirect : '/'
+    })
+);
+
+router.get('/auth/logout', isLoggedIn, function(req, res) {
+    var user = req.user;
+
+    user.token = undefined;
+    user.save(function(err) {
+        // console.log(user, ' has been successfully logged out.');
+        // res.redirect('/');
+        req.logout();
+        res.redirect('https://accounts.google.com/logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:5000');
+    });
+    // req.session.destroy();
+
+    // req.redirect('/');
+});
+
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    // console.log('user logged in::', req.user);
+    res.redirect('/');
+}
+
+router.get('/home', isLoggedIn, function(req, res) {
+    // console.log('user logged in :: ', req.user);
+    res.sendFile(path.resolve(__dirname, '../public/views/home.html'));
 });
 
 module.exports = router;
